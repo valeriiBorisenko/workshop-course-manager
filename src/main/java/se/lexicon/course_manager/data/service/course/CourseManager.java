@@ -74,20 +74,14 @@ public class CourseManager implements CourseService {
     public boolean addStudentToCourse(int courseId, int studentId) {
         Course course = courseDao.findById(courseId);
         Student student = studentDao.findById(studentId);
-        if (!course.getStudents().contains(student)) {
-            return course.enrollStudent(student);
-        }
-        return false;
+        return course.enrollStudent(student);
     }
 
     @Override
     public boolean removeStudentFromCourse(int courseId, int studentId) {
         Course course = courseDao.findById(courseId);
         Student student = studentDao.findById(studentId);
-        if (course.getStudents().contains(student)) {
-            return course.unenrollStudent(student);
-        }
-        return false;
+        return course.unenrollStudent(student);
     }
 
     @Override
