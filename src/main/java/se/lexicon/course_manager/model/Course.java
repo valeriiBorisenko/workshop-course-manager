@@ -1,7 +1,6 @@
 package se.lexicon.course_manager.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -25,10 +24,6 @@ public class Course {
         return id;
     }
 
-    public int getWeekDuration() {
-        return weekDuration;
-    }
-
     public String getCourseName() {
         return courseName;
     }
@@ -43,6 +38,14 @@ public class Course {
 
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
+    }
+
+    public int getWeekDuration() {
+        return weekDuration;
+    }
+
+    public void setWeekDuration(int weekDuration) {
+        this.weekDuration = weekDuration;
     }
 
     public Collection<Student> getStudents() {

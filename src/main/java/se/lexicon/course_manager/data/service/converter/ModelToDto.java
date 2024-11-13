@@ -22,16 +22,25 @@ public class ModelToDto implements Converters {
 
     @Override
     public CourseView courseToCourseView(Course course) {
-        return null;
+        List<StudentView> studentViewList = studentsToStudentViews(course.getStudents());
+        return new CourseView(course.getId(), course.getCourseName(), course.getStartDate(), course.getWeekDuration(), studentViewList);
     }
 
     @Override
     public List<CourseView> coursesToCourseViews(Collection<Course> courses) {
-        return null;
+        List<CourseView> courseViewList = new ArrayList<>();
+        for (Course course: courses) {
+            courseViewList.add(courseToCourseView(course));
+        }
+        return courseViewList;
     }
 
     @Override
     public List<StudentView> studentsToStudentViews(Collection<Student> students) {
-        return null;
+        List<StudentView> studentViewList = new ArrayList<>();
+        for (Student student: students) {
+            studentViewList.add(studentToStudentView(student));
+        }
+        return studentViewList;
     }
 }

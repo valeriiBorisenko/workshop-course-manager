@@ -11,7 +11,6 @@ import se.lexicon.course_manager.dto.views.StudentView;
 import se.lexicon.course_manager.model.Student;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -38,7 +37,17 @@ public class StudentManager implements StudentService {
 
     @Override
     public StudentView update(UpdateStudentForm form) {
-        return null;
+        Student student = studentDao.findById(form.getId());
+        if (form.getName() != null) {
+            student.setName(form.getName());
+        }
+        if (form.getEmail() != null) {
+            student.setEmail(form.getEmail());
+        }
+        if (form.getAddress() != null) {
+            student.setAddress(form.getAddress());
+        }
+        return converters.studentToStudentView(student);
     }
 
     @Override
@@ -55,16 +64,23 @@ public class StudentManager implements StudentService {
 
     @Override
     public List<StudentView> searchByName(String name) {
-        return null;
+        Collection<Student> studentList = studentDao.findByNameContains(name);
+        return converters.studentsToStudentViews(studentList);
     }
 
     @Override
     public List<StudentView> findAll() {
-        return null;
+        Collection<Student> studentList = studentDao.findAll();
+        return converters.studentsToStudentViews(studentList);
     }
 
     @Override
     public boolean deleteStudent(int id) {
+        Student student = studentDao.findById(id);
+        if (student != null) {
+            studentDao.removeStudent(student);
+            return true;
+        }
         return false;
     }
 }
