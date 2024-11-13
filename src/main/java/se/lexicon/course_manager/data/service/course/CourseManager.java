@@ -8,9 +8,12 @@ import se.lexicon.course_manager.data.service.converter.Converters;
 import se.lexicon.course_manager.dto.forms.CreateCourseForm;
 import se.lexicon.course_manager.dto.forms.UpdateCourseForm;
 import se.lexicon.course_manager.dto.views.CourseView;
+import se.lexicon.course_manager.model.Course;
+import se.lexicon.course_manager.model.Student;
 
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 // TODO provide proper implementation.
@@ -30,56 +33,88 @@ public class CourseManager implements CourseService {
 
     @Override
     public CourseView create(CreateCourseForm form) {
-        return null;
+        Course course = courseDao.createCourse(form.getCourseName(), form.getStartDate(), form.getWeekDuration());
+        return converters.courseToCourseView(course);
     }
 
     @Override
     public CourseView update(UpdateCourseForm form) {
-        return null;
+        Course course = courseDao.findById(form.getId());
+        if (form.getCourseName() != null) {
+            course.setCourseName(form.getCourseName());
+        }
+        if (form.getStartDate() != null) {
+            course.setStartDate(form.getStartDate());
+        }
+        if (form.getWeekDuration() != null) {
+            course.setWeekDuration(form.getWeekDuration());
+        }
+        return converters.courseToCourseView(course);
     }
 
     @Override
     public List<CourseView> searchByCourseName(String courseName) {
-        return null;
+        Collection<Course> coursesList = courseDao.findByNameContains(courseName);
+        return converters.coursesToCourseViews(coursesList);
     }
 
     @Override
     public List<CourseView> searchByDateBefore(LocalDate end) {
-        return null;
+        Collection<Course> coursesList = courseDao.findByDateBefore(end);
+        return converters.coursesToCourseViews(coursesList);
     }
 
     @Override
     public List<CourseView> searchByDateAfter(LocalDate start) {
-        return null;
+        Collection<Course> coursesList = courseDao.findByDateAfter(start);
+        return converters.coursesToCourseViews(coursesList);
     }
 
     @Override
     public boolean addStudentToCourse(int courseId, int studentId) {
+        Course course = courseDao.findById(courseId);
+        Student student = studentDao.findById(studentId);
+        if (!course.getStudents().contains(student)) {
+            return course.enrollStudent(student);
+        }
         return false;
     }
 
     @Override
     public boolean removeStudentFromCourse(int courseId, int studentId) {
+        Course course = courseDao.findById(courseId);
+        Student student = studentDao.findById(studentId);
+        if (course.getStudents().contains(student)) {
+            return course.unenrollStudent(student);
+        }
         return false;
     }
 
     @Override
     public CourseView findById(int id) {
-        return null;
+        Course course = courseDao.findById(id);
+        return converters.courseToCourseView(course);
     }
 
     @Override
     public List<CourseView> findAll() {
-        return null;
+        Collection<Course> coursesList = courseDao.findAll();
+        return converters.coursesToCourseViews(coursesList);
     }
 
     @Override
     public List<CourseView> findByStudentId(int studentId) {
-        return null;
+        Collection<Course> findStudentList = courseDao.findByStudentId(studentId);
+        return converters.coursesToCourseViews(findStudentList);
     }
 
     @Override
     public boolean deleteCourse(int id) {
+        Course course = courseDao.findById(id);
+        if (course != null) {
+            courseDao.removeCourse(course);
+            return true;
+        }
         return false;
     }
 }
