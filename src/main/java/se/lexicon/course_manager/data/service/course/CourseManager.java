@@ -105,10 +105,6 @@ public class CourseManager implements CourseService {
     @Override
     public boolean deleteCourse(int id) {
         Course course = courseDao.findById(id);
-        if (course != null) {
-            courseDao.removeCourse(course);
-            return true;
-        }
-        return false;
+        return courseDao.removeCourse(course);
     }
 }
