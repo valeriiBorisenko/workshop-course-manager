@@ -1,6 +1,7 @@
 package se.lexicon.course_manager.data.service.student;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,43 @@ public class StudentManagerTest {
         assertNotNull(studentDao);
     }
 
-    // TODO Write your tests here
+
+    @BeforeEach
+    void setUp() {
+    }
+
+    @Test
+    void create() {
+    }
+
+    @Test
+    void update() {
+    }
+
+    @Test
+    void findById() {
+    }
+
+    @Test
+    void searchByEmail() {
+    }
+
+    @Test
+    void searchByName() {
+    }
+
+    @Test
+    void findAll() {
+    }
+
+    @Test
+    void deleteStudent() {
+    }
 
     @AfterEach
     void tearDown() {
         StudentSequencer.setStudentSequencer(0);
         studentDao.clear();
     }
+
 }
