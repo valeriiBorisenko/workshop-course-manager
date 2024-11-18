@@ -28,6 +28,8 @@ public class ModelToDto implements Converters {
 
     @Override
     public List<CourseView> coursesToCourseViews(Collection<Course> courses) {
+        if (courses == null) return null;
+
         List<CourseView> courseViewList = new ArrayList<>();
         for (Course course: courses) {
             courseViewList.add(courseToCourseView(course));
@@ -37,6 +39,8 @@ public class ModelToDto implements Converters {
 
     @Override
     public List<StudentView> studentsToStudentViews(Collection<Student> students) {
+        if (students == null) return null;
+
         List<StudentView> studentViewList = new ArrayList<>();
         for (Student student: students) {
             studentViewList.add(studentToStudentView(student));

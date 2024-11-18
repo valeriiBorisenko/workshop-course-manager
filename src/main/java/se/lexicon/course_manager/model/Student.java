@@ -1,19 +1,24 @@
 package se.lexicon.course_manager.model;
 
-import se.lexicon.course_manager.data.sequencers.StudentSequencer;
-
+import java.io.Serializable;
 import java.util.Objects;
 
 // TODO implement model
-public class Student {
+public class Student implements Serializable {
 
     private int id;
     private String name;
     private String email;
     private String address;
 
-    public Student(int id, String name, String email, String address) {
+    public Student(){}
+
+    public Student(int id) {
         this.id = id;
+    }
+
+    public Student(int id, String name, String email, String address) {
+        this(id);
         this.name = name;
         this.email = email;
         this.address = address;
@@ -49,12 +54,12 @@ public class Student {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Student{ id: ").append(id)
-                .append(", name: ").append(name)
-                .append(", email: ").append(email)
-                .append(", address: ").append(address).append(" }");
-        return sb.toString();
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 
     @Override

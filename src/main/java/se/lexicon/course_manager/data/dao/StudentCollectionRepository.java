@@ -1,9 +1,6 @@
 package se.lexicon.course_manager.data.dao;
 
-
-
 import se.lexicon.course_manager.data.sequencers.StudentSequencer;
-import se.lexicon.course_manager.model.Course;
 import se.lexicon.course_manager.model.Student;
 
 import java.util.*;
@@ -21,14 +18,17 @@ public class StudentCollectionRepository implements StudentDao {
     @Override
     public Student createStudent(String name, String email, String address) {
         Student student = new Student(StudentSequencer.nextStudentId(), name, email, address);
-        students.add(student);
-        return student;
+
+        if (students.add(student)) {
+            return student;
+        }
+        return null;
     }
 
     @Override
     public Student findByEmailIgnoreCase(String email) {
         for (Student student: students) {
-            if (student.getEmail().equalsIgnoreCase(email)) {
+            if (student.getEmail().trim().equalsIgnoreCase(email.trim())) {
                 return student;
             }
         }
@@ -37,9 +37,10 @@ public class StudentCollectionRepository implements StudentDao {
 
     @Override
     public Collection<Student> findByNameContains(String name) {
-        HashSet<Student> findStudents = new HashSet<>();
+        Collection<Student> findStudents = new HashSet<>();
+
         for (Student student : students) {
-            if (student.getName().contains(name)) {
+            if (student.getName().trim().toLowerCase().contains(name.trim().toLowerCase())) {
                 findStudents.add(student);
             }
         }
@@ -58,16 +59,12 @@ public class StudentCollectionRepository implements StudentDao {
 
     @Override
     public Collection<Student> findAll() {
-        return students;
+        return Collections.unmodifiableCollection(students);
     }
 
     @Override
     public boolean removeStudent(Student student) {
-        if (students.contains(student)) {
-            students.remove(student);
-            return true;
-        }
-        return false;
+        return students.remove(student);
     }
 
     @Override

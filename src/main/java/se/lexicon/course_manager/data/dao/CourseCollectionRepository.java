@@ -3,13 +3,12 @@ package se.lexicon.course_manager.data.dao;
 
 
 import se.lexicon.course_manager.data.sequencers.CourseSequencer;
-import se.lexicon.course_manager.data.sequencers.StudentSequencer;
 import se.lexicon.course_manager.model.Course;
 import se.lexicon.course_manager.model.Student;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 // TODO provide proper implementation.
@@ -26,8 +25,10 @@ public class CourseCollectionRepository implements CourseDao{
     @Override
     public Course createCourse(String courseName, LocalDate startDate, int weekDuration) {
         Course course = new Course(CourseSequencer.nextCourseId(), courseName, startDate, weekDuration);
-        courses.add(course);
-        return course;
+        if (courses.add(course)) {
+            return course;
+        }
+        return null;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class CourseCollectionRepository implements CourseDao{
     public Collection<Course> findByNameContains(String name) {
         HashSet<Course> findCourses = new HashSet<>();
         for (Course course : courses) {
-            if (course.getCourseName().contains(name)) {
+            if (course.getCourseName().trim().toLowerCase().contains(name.trim().toLowerCase())) {
                 findCourses.add(course);
             }
         }
@@ -75,12 +76,12 @@ public class CourseCollectionRepository implements CourseDao{
 
     @Override
     public Collection<Course> findAll() {
-        return courses;
+        return Collections.unmodifiableCollection(courses);
     }
 
     @Override
     public Collection<Course> findByStudentId(int studentId) {
-        HashSet<Course> findCourses = new HashSet<>();
+        Collection<Course> findCourses = new HashSet<>();
         for (Course course: courses) {
             for (Student student: course.getStudents()) {
                 if (student.getId() == studentId) {
@@ -93,11 +94,7 @@ public class CourseCollectionRepository implements CourseDao{
 
     @Override
     public boolean removeCourse(Course course) {
-        if (courses.contains(course)) {
-            courses.remove(course);
-            return true;
-        }
-        return false;
+        return courses.remove(course);
     }
 
     @Override
