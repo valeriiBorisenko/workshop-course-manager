@@ -39,17 +39,14 @@ public class CourseManager implements CourseService {
 
     @Override
     public CourseView update(UpdateCourseForm form) {
-        Course course = courseDao.findById(form.getId());
-        if (form.getCourseName() != null) {
-            course.setCourseName(form.getCourseName());
+        Course courseUpdated = courseDao.findById(form.getId());
+
+        if (courseUpdated != null) {
+            courseUpdated.setCourseName(form.getCourseName());
+            courseUpdated.setStartDate(form.getStartDate());
+            courseUpdated.setWeekDuration(form.getWeekDuration());
         }
-        if (form.getStartDate() != null) {
-            course.setStartDate(form.getStartDate());
-        }
-        if (form.getWeekDuration() != null) {
-            course.setWeekDuration(form.getWeekDuration());
-        }
-        return converters.courseToCourseView(course);
+        return converters.courseToCourseView(courseUpdated);
     }
 
     @Override

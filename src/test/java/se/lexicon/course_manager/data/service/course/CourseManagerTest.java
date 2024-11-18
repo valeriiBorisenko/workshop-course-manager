@@ -1,6 +1,7 @@
 package se.lexicon.course_manager.data.service.course;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,54 @@ public class CourseManagerTest {
         assertNotNull(courseDao);
     }
 
-    // TODO Write your tests here
+
+    @BeforeEach
+    void setUp() {
+    }
+
+    @Test
+    void create() {
+    }
+
+    @Test
+    void update() {
+    }
+
+    @Test
+    void searchByCourseName() {
+    }
+
+    @Test
+    void searchByDateBefore() {
+    }
+
+    @Test
+    void searchByDateAfter() {
+    }
+
+    @Test
+    void addStudentToCourse() {
+    }
+
+    @Test
+    void removeStudentFromCourse() {
+    }
+
+    @Test
+    void findById() {
+    }
+
+    @Test
+    void findAll() {
+    }
+
+    @Test
+    void findByStudentId() {
+    }
+
+    @Test
+    void deleteCourse() {
+    }
 
     @AfterEach
     void tearDown() {

@@ -8,6 +8,7 @@ import se.lexicon.course_manager.data.service.converter.Converters;
 import se.lexicon.course_manager.dto.forms.CreateStudentForm;
 import se.lexicon.course_manager.dto.forms.UpdateStudentForm;
 import se.lexicon.course_manager.dto.views.StudentView;
+import se.lexicon.course_manager.model.Course;
 import se.lexicon.course_manager.model.Student;
 
 
@@ -38,15 +39,13 @@ public class StudentManager implements StudentService {
     @Override
     public StudentView update(UpdateStudentForm form) {
         Student student = studentDao.findById(form.getId());
-        if (form.getName() != null) {
+
+        if (student != null) {
             student.setName(form.getName());
-        }
-        if (form.getEmail() != null) {
             student.setEmail(form.getEmail());
-        }
-        if (form.getAddress() != null) {
             student.setAddress(form.getAddress());
         }
+
         return converters.studentToStudentView(student);
     }
 
@@ -77,6 +76,11 @@ public class StudentManager implements StudentService {
     @Override
     public boolean deleteStudent(int id) {
         Student student = studentDao.findById(id);
+
+        for (Course course: courseDao.findByStudentId(id)) {
+            course.unenrollStudent(student);
+        }
+
         return studentDao.removeStudent(student);
     }
 }

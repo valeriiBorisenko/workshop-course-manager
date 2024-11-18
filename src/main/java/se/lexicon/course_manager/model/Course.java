@@ -1,11 +1,13 @@
 package se.lexicon.course_manager.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 // TODO implement model
-public class Course {
+public class Course implements Serializable {
 
     private int id;
     private String courseName;
@@ -13,11 +15,25 @@ public class Course {
     private int weekDuration;
     private Collection<Student> students;
 
-    public Course(int id, String courseName, LocalDate startDate, int weekDuration) {
+    public Course() {
+        this.students = new HashSet<>();
+    }
+
+    public Course(int id) {
+        this();
         this.id = id;
+    }
+
+    public Course(int id, String courseName, LocalDate startDate, int weekDuration) {
+        this(id);
         this.courseName = courseName;
         this.startDate = startDate;
         this.weekDuration = weekDuration;
+    }
+
+    public Course(int id, String courseName, LocalDate startDate, int weekDuration, Collection<Student> students) {
+        this(id, courseName, startDate, weekDuration);
+        this.students = students;
     }
 
     public int getId() {
@@ -57,32 +73,27 @@ public class Course {
     }
 
     public boolean enrollStudent(Student student) {
+        boolean statusEnroll = false;
         if (student != null && !students.contains(student)) {
-            students.add(student);
-            return true;
-        } else {
-            return false;
+            statusEnroll = students.add(student);
         }
+
+        return statusEnroll;
     }
 
     public boolean unenrollStudent(Student student) {
-        if (student != null && students.contains(student)) {
-            students.remove(student);
-            return true;
-        } else {
-            return false;
-        }
+        return students.remove(student);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Course{ id: ").append(id)
-                .append(", courseName: ").append(courseName)
-                .append(", startDate: ").append(startDate)
-                .append(", weekDuration: ").append(weekDuration)
-                .append(", students: ").append(students).append(" }");
-        return sb.toString();
+        return "Course{" +
+                "id=" + id +
+                ", courseName='" + courseName + '\'' +
+                ", startDate=" + startDate +
+                ", weekDuration=" + weekDuration +
+                ", students=" + students +
+                '}';
     }
 
     @Override
